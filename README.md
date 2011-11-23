@@ -1,6 +1,6 @@
 # Project Euler
 
-These are my solutions to some of the problems. Seriously, __don't__ look any further, unless you are __100% percent__ sure you know what you do. Spoilers are baaaad. You've been warned.
+These are my solutions (or just attempts) to some of the problems. Seriously, __don't__ look any further, unless you are __100% percent__ sure you know what you do. Spoilers are baaaad. You've been warned.
 
 ## Project what???
 
