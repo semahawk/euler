@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 # 
-# Tubis's solution. Mine is taking to much time :D
+# Tubis's solution. Mine is taking too much time :D
 # 
 
 require 'prime'
