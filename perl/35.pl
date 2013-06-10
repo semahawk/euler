@@ -14,23 +14,36 @@ use strict;
 use warnings;
 use List::MoreUtils "uniq";
 
-my @primes;
-my @non_primes;
+# not every prime here, only the cyclic ones
+my %primes;
+# numbers that are non primes for granted
+my %non_primes;
+
+# fill in the twos
+for (my $t = 4; $t < 1_000_000; $t += 2){
+  $non_primes{$t} = undef;
+}
 
 sub is_prime {
   my $n = shift;
-  #return 0 if ($n ~~ @non_primes); # unstable
-  return 1 if ($n ~~ @primes);
+  #print "HEHEHEH\n", return 0 if (exists $non_primes{$n});
+  #print "HEHEHEH\n", return 1 if (exists $primes{$n});
+  if (exists $non_primes{$n}){
+    #print "skipping $n, non prime\n";
+    return 0;
+  }
+  if (exists $primes{$n}){
+    #print "skipping $n, PRIME\n";
+    return 1;
+  }
   return 0 if ($n == 1);
   return 1 if ($n == 2);
   for (my $i = $n - 1; $i > 1; $i--){
     if ($n % $i == 0){
-      # unstable start
-      #for (my $m = $n; $m < 1_000_000; $m += $n){
-        #push @non_primes, $m;
-      #}
-      #push @non_primes, $n;
-      # unstable end
+      for (my $m = $n; $m < 1_000_000; $m += $n){
+        $non_primes{$m} = undef;
+      }
+      $non_primes{$n} = undef;
       return 0;
     }
   }
@@ -43,8 +56,8 @@ for (my $i = 1; $i < 1_000_000; $i++){
   my $all_prime = 1;
   my @rots = ();
 
-  next if ($i ~~ @primes);
-  #next if ($i ~~ @non_primes); # unstable
+  next if (exists $primes{$i});
+  next if (exists $non_primes{$i});
   next if (!is_prime $i);
 
   for my $j (0 .. length($i) - 1){
@@ -55,10 +68,12 @@ for (my $i = 1; $i < 1_000_000; $i++){
   }
 
   if ($all_prime){
-    print "+ @rots\n";
-    push @primes, uniq @rots;
+    foreach my $rot (uniq @rots){
+      $primes{$rot} = undef;
+      print "+ $rot\n";
+    }
   }
 }
 
-print $#primes + 1 . "\n";
+print scalar keys %primes, "\n";
 
